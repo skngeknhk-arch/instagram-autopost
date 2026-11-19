@@ -47,7 +47,12 @@ urls = [img_url(p['id'], f) for f in p['images']]
 print(f"投稿予定: {p['id']}（{st['next']+1}/{len(st['order'])}件目, 画像{len(urls)}枚）\n{p['caption'][:120]}…")
 if DRY:
     print('\n'.join(urls)); raise SystemExit(0)
-if not (TOKEN and IGID): raise SystemExit('IG_ACCESS_TOKEN / IG_USER_ID が未設定です')
+if not TOKEN: raise SystemExit('IG_ACCESS_TOKEN が未設定です')
+if not IGID:  # 未設定ならトークンに紐づくFacebookページからInstagramアカウントIDを自動取得
+    pages = api('me/accounts', {'fields': 'name,instagram_business_account'}, 'GET').get('data', [])
+    ig = [(pg['name'], pg['instagram_business_account']['id']) for pg in pages if pg.get('instagram_business_account')]
+    if len(ig) != 1: raise SystemExit(f'InstagramアカウントIDを特定できません（候補: {ig}）。IG_USER_ID を設定してください')
+    print('Instagramアカウント:', ig[0][0], ig[0][1]); IGID = ig[0][1]
 
 if len(urls) == 1:
     cid = api(f'{IGID}/media', {'image_url': urls[0], 'caption': p['caption']})['id']

@@ -16,7 +16,7 @@
 2. このフォルダの中身をアップロード（GitHub Desktop 推奨。Web画面のアップロードは1回100ファイルまで）
 3. リポジトリの Settings → Secrets and variables → Actions → New repository secret で2つ登録
    - `IG_ACCESS_TOKEN` … Instagram 投稿権限つきアクセストークン
-   - `IG_USER_ID` … Instagram ビジネスアカウントのID（数字）
+   - `IG_USER_ID` …（省略可）Instagram ビジネスアカウントのID。未登録ならトークンから自動取得
 4. Actions タブ → Instagram daily post → Run workflow（dry_run=1）で、投稿予定の内容が表示されるか確認
 5. dry_run=0 で1回手動実行し、実際に投稿されるか確認。以降は毎日自動
 
